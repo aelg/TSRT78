@@ -1,0 +1,5 @@
+function res = sig_pow(x)
+
+res = sum(abs(x).^2)/length(x);
+
+end
