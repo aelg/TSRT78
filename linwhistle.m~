@@ -45,7 +45,7 @@ plot(lambada);
 %}
 
 
-na = 10
+na = 3
 [th, P, lam, epsi] = sig2ar(w',na);
 root_angle = angle(roots(th))*2./pi
 A = 0.1;
@@ -66,8 +66,4 @@ figure(3);
 plot(abs(fft(filter(1,th,[zeros(200, 1); 1; zeros(200,1)]))));
 [b,a] = arma2spec(1, th', 1);
 est2 = filter(b,a,randn(10000,1).*(rem((1:10000),10)==0)'*0.1);
-figure(6);
-plot(psd(spectrum.welch, (w)));
-figure(7);
-plot(psd(spectrum.welch, (est)));
-%plot(abs(fft(est2)));
+plot(abs(fft(est2)));

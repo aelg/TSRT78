@@ -1,0 +1,52 @@
+\documentclass[12pt]{article}
+%\usepackage[swedish]{babel}
+%\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{pdfpages}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+\title{Reprt lab 1}
+\author{Group 22}
+\date{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2ex}
+
+\begin{document}
+
+%\includepdf{Forsattsblad_SigSys.pdf}
+
+\pagebreak
+
+\maketitle
+
+\pagebreak
+
+\pagebreak
+
+\section{Whistle}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=14cm]{flow_chart.png}
+  \caption{Flow chart of Slotted ALOHA simulation.}
+\end{figure}
+
+
+\clearpage
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+  title=\lstname,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},          % keyword style
+  commentstyle=\color{dkgreen},       % comment style
+  stringstyle=\color{mauve},         % string literal style
+  showstringspaces=false,         % underline spaces within strings
+}
+\lstinputlisting[language=C++]{slotted_aloha.cc}
+\end{document}
+
