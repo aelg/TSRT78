@@ -1,0 +1,11 @@
+%linwovel.m
+
+load wovel.mat
+
+Fs=8000;
+w = detrend(y(2, 4300:end));
+len = length(w);
+x = 0:2/len:1.9999999999;
+
+freq_dom = 0.28;
+B = 0.01;
