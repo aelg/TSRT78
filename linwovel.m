@@ -54,5 +54,5 @@ figure(3);
 %plot(x,abs(fft(est)));
 plot(psd(spectrum.welch, (est)));
 est = est(200:end-200);
-sound(est)
-sound(oo)
+%sound(est)
+%sound(oo)

@@ -5,7 +5,7 @@ len = length(sen);
 x = 0:2/len:1.9999999999;
 %[b,a] = butter(5, [0.2 0.8]);
 %sen = filtfilt(b,a,sen);
-%sound(sen)
+sound(sen)
 %%
 %figure(1);
 %plot(x, abs(fft(sen)));
