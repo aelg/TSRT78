@@ -1,7 +1,6 @@
 whistle = y;
 whistle = whistle(2,4300:end);
 x = 2/length(whistle):2/length(whistle):2;
-WHISTLE = zeros(1,length(whistle));
 WHISTLE= fft(whistle);
 %%
 soundsc(whistle,8000)
@@ -165,6 +164,54 @@ figure;
 plot(A); 
 figure;
 plot(B)
+
+%%
+sentence = y(2,:);
+
+
+%%
+%sentence
+sentence = y(2,:);
+interval= 160;
+order = 10;
+intervals=floor(length(sentence)/160);
+
+modsen= [];
+for k= 1:intervals
+sentence((k-1)*160+1:k*160+1) = detrend(sentence((k-1)*160+1:k*160+1));
+m1 = ar(sentence((k-1)*160+1:k*160+1),8);
+m1.a;
+e=filter(m1.a,1,sentence((k-1)*160+1:k*160+1)'); % m1 <-> AR model of the segment
+r=covf(e,100)
+r=r(20:end);
+[A,D] = max(r);
+Roots=roots(m1.a);
+for i = 1:length(Roots)
+    if (abs(Roots(i)) > 1)
+        Roots(i) = 1/Roots(i);
+    end
+end
+m1a= poly(Roots);
+input = 1:160;
+ehat = sqrt(160*A/D)*(rem(input,D)== 0);
+yhat=filter(1,m1a,ehat);
+modsen= [modsen yhat];
+
+end
+
+%%
+soundsc(modsen,8000)
+
+%%
+figure(1);
+plot(abs(fft(sentence)));
+figure(2);
+plot(abs(fft(modsen)));
+  
+
+
+    
+  
 
 
 
