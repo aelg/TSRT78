@@ -45,9 +45,11 @@ plot(lambada);
 %}
 
 
-na = 10
+na = 2
 [th, P, lam, epsi] = sig2ar(w',na);
-root_angle = angle(roots(th))*2./pi
+rr = roots([1 th'])
+root_angle = angle(roots([1 th']))*2./pi
+root_abs = abs(rr)
 A = 0.1;
 est = rand(na,1)*A;
 for i = na+1:len-na
@@ -60,8 +62,8 @@ end
 figure(5);
 plot(abs(fft(detrend(filtfilt(BPb,BPa,est), 'constant'))));
 plot(est);
-sound(est*0.1);
-sound(w);
+%sound(est*0.1);
+%sound(w);
 figure(3);
 plot(abs(fft(filter(1,th,[zeros(200, 1); 1; zeros(200,1)]))));
 [b,a] = arma2spec(1, th', 1);
