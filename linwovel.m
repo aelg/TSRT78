@@ -1,21 +1,70 @@
 %linwovel.m
 
+% Load and detrend data
 Fs=8000;
 load aaa.mat
 aa = detrend(y(2, 6000:end));
 load ooo.mat
 oo = detrend(y(2, 6000:end));
 len = length(aa);
-x = 0:2/len:1.9999999999;
+x = 0:Fs/len:Fs-1e-4;
+
+% Divide into estimation and validation data.
+aa_est = aa(1:end*2/3);
+aa_val = aa(end*2/3+1:end);
+oo_est = oo(1:end*2/3);
+oo_val = oo(end*2/3+1:end);
+len_est = length(aa_est);
+len_val = length(aa_val);
+x_est = 0:2/len_est:Fs-1e-9;
+x_val = 0:2/len_val:Fs-1e-9;
 
 figure(1);
+subplot(2, 1, 1);
+length(x)
+length(abs(fft(aa)))
+plot(x, abs(fft(aa)));
+xlabel('Hz');
+ylabel('Amplitude');
+legend('DFT a-sound');
+subplot(2, 1, 2);
 plot(x, abs(fft(oo)));
-figure(2);
-%plot(x, abs(spectrum(oo)));
+legend('DFT o-sound');
+xlabel('Hz');
+ylabel('Amplitude');
 %spectrum(oo);
-plot(psd(spectrum.welch, (oo)));
+%plot(psd(spectrum.welch, (oo)));
+%%
 
-na = 20
+% Validation of different orders.
+varaa = [];
+varoo = [];
+for na = (1:20)
+    m = ar(aa_est, na);
+    residual = filter([m.a(1:end)], 1, aa_val);
+    varaa = [varaa residual*residual'/length(residual)];
+    
+    m = ar(oo_est, na);
+    residual = filter([m.a(1:end)], 1, oo_val);
+    varoo = [varoo residual*residual'/length(residual)];
+    %subplot(2, 1, 1);
+    %plot(aa_val)
+    %subplot(2, 1, 2);
+    %plot(residual)
+end
+figure(2);
+subplot(2,1,1);
+plot(varaa);
+title('Residual Variance a-sound');
+ylabel('Variance');
+xlabel('Model Order');
+subplot(2,1,2);
+plot(varoo);
+title('Residual Variance o-sound');
+ylabel('Variance');
+xlabel('Model Order');
+
+%%
 
 lambada = [];
 for i = (1:50)
