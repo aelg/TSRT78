@@ -38,11 +38,85 @@ These sounds where then used to complete the assignments.
 
 \section{Whistle}
 \subsection{Task}
+The first assignment consist of two parts. The input data is a recorded whistle which purity compared to a sine wave is estimated in the first part. The second part is about estimating the whistle using a second order AR. The signal is shown in .. %infoga figurnumrering.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{Fouriertranswhis.png}
+\caption{The fouriertransform of the signal processed in the first assignment}
+\end{figure}
 
 \subsection{Theoretical overview}
 
+\subsubsection{Energy and harmonic distortion}
+A good way to approxiamate the purity of a periodic signal is to calculate the harmonic distorion. It is defined:
+
+ \begin{equation}Dist = 1-\frac{E_{dom. freq.}}{E_{tot.}}\end{equation}
+
+The energy $E$ for a signal is defined as
+
+\begin{equation}E=\int_{0}^T \vert y(t)\vert ^2 dt=\frac{1}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}}\vert Y(\theta)\vert ^2d\theta \end{equation}
+%ssjukt fula integraler. bör fixas
+
+where $Y(\theta)$ is the fouriertransform of $y(t)$ and T is the length od the signal. Since the signals in this laboratory are timediscrete, the energy can not be calculated this way. The integrals can instead be approximated as a sum of $N$ elements that have the width $T/N$, where $T$ is the length of the integrationinterval.
+
+\begin{equation}
+E=\int_{0}^T \vert y(t)\vert^2 dt\approx \frac{T}{N}\sum_{n=0}^{N-1}\vert y(n) \vert^2 
+\label{A} 
+\end{equation}
+
+and
+
+\begin{equation}
+E=\frac{1}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}}\vert Y(\theta)\vert ^2d\theta \approx \frac{2\pi}{NT}\frac{1}{2\pi}\sum_{n=0}^{N-1}\vert Y(\theta) \vert^2=\frac{1}{NT}\sum_{n=0}^{N-1}\vert Y(\theta) \vert^2 
+\end{equation}
+
+\subsubsection{AR}
+AR means auto-regressive and is a way of modeling signals. $AR(n)$ is defined as
+
+\begin{equation} y(t)+a_1y(t-1)+...a_ny(t-n)=e(t) \end{equation}
+
+where $e(t)$ is white noise.
+
+With the notation
+
+\begin{equation}
+(\varphi(t) =(-y(t-1) ... -y(t-n))^T,\theta = (a_1 ... a_n)^T 
+\end{equation}
+
+$y(t)$ can be defined as the linear model
+
+\begin{equation}
+y(t)=\varphi^T(t)\theta+ e(t)
+\end{equation}
+
+The optimal use of $\theta$ is
+
+\begin{equation}
+\hat{\theta}=arg_{\theta}min \frac{1}{N}\sum_{t=1}^{\infty}(y(t)-\varphi^T(t)\theta)^2
+\end{equation}
+
+which is given by
+
+\begin{equation}
+\hat{\theta}=\left(\sum_{t=1}^N\varphi(t)\varphi^T(t)\right)^{-1}\left(\sum_{t=1}^N\varphi(t)y(t)\right)
+\end{equation}
+
+
 \subsection{Practical Execution}
+The distortion of the signal can be calculated in two different ways. Either the energy of the signal is calculated in the time-domain or in the frequency domain. In this lab both methods are handeled.
+
+The energy for The whole signal in the the time-domain is calculated according to equation \ref{A}. The energy for the dominating frequencies is acquired by filtering the signal with a bandpassfilter with the dominating frequencies in the passband. The dominating frequencies can be approximated to 1080-1160 Hz. 
+
+\begin{equation}
+E_{tot.} \approx 0.0014, E_{dom. freq.\approx 0.0013, Dist_{time} = 0.0511
+
+\end{equation}
+
+\begin{equation}
+E_{total}=
+
+
 
 \subsection{Results}
 
