@@ -42,7 +42,7 @@ The first assignment consist of two parts. The input data is a recorded whistle 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=14cm]{Fouriertranswhis.png}
+%\includegraphics[width=14cm]{Fouriertranswhis.png}
 \caption{The fouriertransform of the signal processed in the first assignment}
 \end{figure}
 
@@ -109,13 +109,12 @@ The distortion of the signal can be calculated in two different ways. Either the
 The energy for The whole signal in the the time-domain is calculated according to equation \ref{A}. The energy for the dominating frequencies is acquired by filtering the signal with a bandpassfilter with the dominating frequencies in the passband. The dominating frequencies can be approximated to 1080-1160 Hz. 
 
 \begin{equation}
-E_{tot.} \approx 0.0014, E_{dom. freq.\approx 0.0013, Dist_{time} = 0.0511
-
+  E_{tot.} \approx 0.0014, E_{dom. freq.\approx 0.0013, Dist_{time}} = 0.0511
 \end{equation}
 
-\begin{equation}
+\[
 E_{total}=
-
+\]
 
 
 \subsection{Results}
@@ -132,6 +131,8 @@ An AR model of the sound can be found in the same way as was done in the first a
 The problem this time is that a good order for the model must be found.
 Different model orders need to be validated and compared.
 A good way to do this is splitting the available data into two sets one set is used to estimate the model and the other set is used for validation.
+Now there is a couple of ways of validating that the model order is well choosen.
+
 
 The vowel that are estimated are voiced sounds.
 This means that a pulse train is a good input signal to the model.
@@ -139,6 +140,24 @@ This means that a pulse train is a good input signal to the model.
 \subsection{Practical Execution}
 
 \subsection{Results}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{residual_covariance_a.png}
+\caption{The residual variance as a function of model order (Knee function)}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{residual_covariance_a.png}
+\caption{The residual covariance of different model orders for the a-sound}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{residual_covariance_o.png}
+\caption{The residual covariance of different model orders for the o-sound}
+\end{figure}
 
 \section{Sentence}
 

@@ -39,14 +39,18 @@ ylabel('Amplitude');
 % Validation of different orders.
 varaa = [];
 varoo = [];
+resaa = [];
+resoo = [];
 for na = (1:20)
     m = ar(aa_est, na);
-    residual = filter([m.a(1:end)], 1, aa_val);
-    varaa = [varaa residual*residual'/length(residual)];
+    residual = filter(m.a, 1, aa_val);
+    varaa = [varaa residual*residual'/(aa_val*aa_val')];%length(residual)
+    resaa = [resaa residual'];
     
     m = ar(oo_est, na);
-    residual = filter([m.a(1:end)], 1, oo_val);
-    varoo = [varoo residual*residual'/length(residual)];
+    residual = filter(m.a, 1, oo_val);
+    varoo = [varoo residual*residual'/(oo_val*oo_val')];%length(residual)
+    resoo = [resoo residual'];
     %subplot(2, 1, 1);
     %plot(aa_val)
     %subplot(2, 1, 2);
@@ -63,7 +67,24 @@ plot(varoo);
 title('Residual Variance o-sound');
 ylabel('Variance');
 xlabel('Model Order');
-
+%%
+start = 55;
+for k = (start:start+4)
+    figure(3);
+    subplot(4,1,k-start+1);
+    %covf([resaa(:,k); aa_val'])
+    index = -len_val+1:len_val-1;
+    plot(index, xcorr(resaa(:,k), aa_val'));
+    title(sprintf('Residual Covariance a-sound order %d', k));
+    %ylabel('Variance');
+    xlabel('k');
+    figure(4);
+    subplot(4,1,k-start+1);
+    plot(index, xcorr(resoo(:,k), oo_val'));
+    title(sprintf('Residual Covariance o-sound order %d', k));
+    %ylabel('Variance');
+    xlabel('k');
+end
 %%
 
 lambada = [];
@@ -92,7 +113,7 @@ est = rand(na,1);
 %e = randn(len,1).*(rem((1:len),pulse)<pulse/2)';
 %e = randn(len,1).*(rem((1:len),pulse) == 0)';
 e = A*sqrt(len/pulse)*(rem((1:len),pulse) == 0)';
-e = e+rand(len,1)*A*1;
+%e = e+rand(len,1)*A*1;
 %e = e .* randn(size(e));
 %e = e + 0.005*randn(size(e));
 %e = conv(e, triang(pulse/2), 'same');

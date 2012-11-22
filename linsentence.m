@@ -1,3 +1,4 @@
+clear all
 Fs=8000;
 load sentence.mat
 sen = detrend(y(2,:)*100);
@@ -14,7 +15,6 @@ x = 0:2/len:1.9999999999;
 %spectrum(oo);
 %plot(psd(spectrum.welch, (sen)));
 
-na = 8
 %{
 lambada = [];
 for i = (1:50)
@@ -24,6 +24,8 @@ end
 plot(lambada);
 %}
 %%
+
+na = 15;
 cov = [];
 est = zeros(length(sen),1);
 delay = 0;
@@ -50,10 +52,10 @@ for i = 1:160:length(sen)-160
         r = roots(m.a);
         r2 = [];
         for j = r(:)
-            if abs(j) > 1
+            if abs(j) >= 1
                 r2 = [r2; 1/j];
             else
-                r = [r2; j];
+                r2 = [r2; j];
             end
         end
         m.a = poly(r2);
@@ -61,7 +63,7 @@ for i = 1:160:length(sen)-160
     train = sqrt(A*(160/pulse))*(rem((1:160)+delay,pulse) == 1)';
     train = sqrt(A)*(rem((1:160)+delay,pulse) == 1)';
     if A < 0.1 %+10 
-        train = 0.5*sqrt(mean(r))*randn(160, 1)+train;
+        train = 0.2*sqrt(mean(r))*randn(160, 1)+train;
     end
     alltrain = [alltrain train'];
     %train = train + sqrt(A2*(160/pulse2))*(rem((1:161),pulse2) == 1)';
@@ -83,7 +85,7 @@ for i = 1:160:length(sen)-160
 end
 plot(psd(spectrum.welch, (est)));
 %sound(10*est);
-[bpb, bpa] = butter(5, [0.1 0.6]);
+[bpb, bpa] = butter(5, [0.12 0.7]);
 %est = filtfilt(bpb, bpa, est);
 wavwrite(est, 'out.wav');
 %sound(sen);
