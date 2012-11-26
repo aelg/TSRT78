@@ -25,7 +25,7 @@ plot(lambada);
 %}
 %%
 
-na = 15;
+na = 8;
 cov = [];
 est = zeros(length(sen),1);
 delay = 0;
@@ -62,8 +62,8 @@ for i = 1:160:length(sen)-160
     end
     train = sqrt(A*(160/pulse))*(rem((1:160)+delay,pulse) == 1)';
     train = sqrt(A)*(rem((1:160)+delay,pulse) == 1)';
-    if A < 0.1 %+10 
-        train = 0.2*sqrt(mean(r))*randn(160, 1)+train;
+    if A < 0.1 +10 
+        train = 0.4*sqrt(mean(r))*randn(160, 1)+train;
     end
     alltrain = [alltrain train'];
     %train = train + sqrt(A2*(160/pulse2))*(rem((1:161),pulse2) == 1)';
