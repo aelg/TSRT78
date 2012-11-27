@@ -1,6 +1,6 @@
 whistle = y;
 whistle = whistle(2,4300:end);
-x = 2/length(whistle):2/length(whistle):2;
+x = 1/length(whistle):8000/length(whistle):8000;
 WHISTLE= fft(whistle);
 %%
 soundsc(whistle,8000)
@@ -15,8 +15,8 @@ wn= [0.27 0.29];
 [B A] = butter(5, wn);
 filtwhistle = filtfilt(B, A, whistle);
 
-energytot = sum(abs(whistle).^2)/8000;
-energydom = sum(abs(filtwhistle).^2)/8000;
+energytot = sum(abs(whistle).^2)/8000
+energydom = sum(abs(filtwhistle).^2)/8000
 
 
 puritytime = 1- energydom./energytot
