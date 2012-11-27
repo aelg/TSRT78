@@ -7,7 +7,7 @@
 \usepackage{float}
 \usepackage{listings}
 \usepackage{color}
-\title{Reprt lab 1}
+\title{Report lab 1}
 \author{Group 22}
 \date{\today}
 
@@ -56,20 +56,20 @@ A good way to approxiamate the purity of a periodic signal is to calculate the h
 
 The energy $E$ for a signal is defined as
 
-\begin{equation}E=\int_{0}^T \vert y(t)\vert ^2 dt=\frac{1}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}}\vert Y(\theta)\vert ^2d\theta \end{equation}
+\begin{equation}E=\int_{0}^{T_{L}} \vert y(t)\vert ^2 dt=\frac{1}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}}\vert Y(\theta)\vert ^2d\theta \end{equation}
 %ssjukt fula integraler. bör fixas
 
-where $Y(\theta)$ is the fouriertransform of $y(t)$ and T is the length of the signal. Since the signals in this laboratory are timediscrete, the energy can not be calculated this way. The integrals can instead be approximated as a sum of $N$ elements that have the width $T$, where $T$ is the length of the integration interval.
+where $Y(\theta)$ is the fouriertransform of $y(t)$ and $T_L$ is the length of the signal. Since the signals in this laboratory are timediscrete, the energy can not be calculated this way. The integrals can instead be approximated as a sum of $N$ elements that have the width $T$, where $T$ is the sample period.
 
 \begin{equation}
-E=\int_{0}^T \vert y(t)\vert^2 dt\approx T\sum_{n=0}^{N-1}\vert y(n) \vert^2 
+E=\int_{0}^{T_{L}} \vert y(t)\vert^2 dt\approx T\sum_{n=0}^{N-1}\vert y(n) \vert^2 
 \label{A} 
 \end{equation}
 
 and
 
 \begin{equation}
-E=\frac{1}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}}\vert Y(\theta)\vert ^2d\theta \approx \frac{2\pi}{NT}\frac{1}{2\pi}\sum_{n=0}^{N-1}\vert Y(\theta) \vert^2=\frac{1}{NT}\sum_{n=0}^{N-1}\vert Y(\theta) \vert^2 
+E=\frac{1}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}}\vert Y(\theta)\vert ^2d\theta \approx \frac{2\pi T}{N}\frac{1}{2\pi}\sum_{n=0}^{N-1}\vert Y(\theta) \vert^2=\frac{T}{N}\sum_{n=0}^{N-1}\vert Y(\theta) \vert^2 
 \end{equation}
 
 \subsubsection{AR}
@@ -122,13 +122,13 @@ The distortion of the signal can be calculated in two different ways. Either the
 The energy for the whole signal in the the time-domain is calculated according to equation \ref{A}. The energy for the dominating frequencies is acquired by filtering the signal with a bandpassfilter with the dominating frequencies in the passband. The dominating frequencies for the whistle can be approximated to 1080-1160 Hz. 
 
 \begin{equation}
-E_{tot.} \approx 0.0014, E_{dom. freq.}\approx 0.0013, Dist_{time} = 0.0511
+E_{tot.} \approx 0.001385, E_{dom. freq.}\approx 0.001314, Dist_{time} = 0.05109
 \end{equation}
 
-The energy for the whole signal in the frequency-domain is calculated according to equation \ref{enwhis}. The energy for the dominating frequencies can be approximated as the same sum but over only the dominating frequencies. 
+The energy for the whole signal in the frequency-domain is calculated according to equation \ref{enwhis}. The energy for the dominating frequencies can be approximated with the same sum but over only the dominating frequencies. 
 
 \begin{equation}
-E_{tot.} = \approx 
+E_{tot.} \approx 0.001385, E_{dom. freq.}\approx 0.001337, Dist_{freq.} = 0.03483
 \end{equation}
 
 % inse vad som är fel med energin och lös det!
@@ -144,10 +144,23 @@ To verify that the AR(2) model is a good choise of estimate, the total error $\l
 \caption{The model-errors for different orders of AR-models.\label{whisknee}}
 \end{figure}
 
+The spectrum of the signal can also be approximated using welchs method of estimating Power spectral density. The figures \ref{psdwhis} and \ref{psdar2} shows the spectrum of the unparametric recorded whistle and the parametric AR(2)-model. These figures have the axes graded in $\pi \times rad/s$ and not $Hz$ as in figure~\ref{forwhis}. Converting the dominating frequencies from figure~\ref{forwhis} (1080-1160 Hz) to $\pi \times rad/s$ gives the frequencies 0.27-0.29 $\pi \times rad/s$. Both figure~\ref{psdwhis} and figure~\ref{psdar2} also have their most dominating frequencies in that area. Figure~\ref{psdwhis} also have peaks that are multiples of the dominating frequencies. Those are over-tones that are not dealt with when making the AR-model. The over-tones are amplified in figure~\ref{psdwhis} since it uses a logarithmic scale. 
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{psdwhis.jpg}
+\caption{The spectrum of the recorded whistle.\label{psdwhis}}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{psdar2.jpg}
+\caption{The spectrum of the AR(2)-model.\label{psdar2}}
+\end{figure}
 
 
 \subsection{Results}
+All test of purity of the whistle indicates that the whistle is very pure. Although it contains some overtones. The energies calculated in the frequency domain are almost the same as in the time domain. Since the filter is not ideal and the dominating frequencies are chosen by hand this is as good results as expected. An AR-model of second order is a good estimate of the whistle. It does not model every frequency exactly right but it is really good for the dominating frequencies. 
 
 \section{Vowel}
 
