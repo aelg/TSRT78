@@ -26,10 +26,10 @@ length(abs(fft(aa)))
 plot(x, abs(fft(aa)));
 xlabel('Hz');
 ylabel('Amplitude');
-legend('DFT a-sound');
+title('DFT a-sound');
 subplot(2, 1, 2);
 plot(x, abs(fft(oo)));
-legend('DFT o-sound');
+title('DFT o-sound');
 xlabel('Hz');
 ylabel('Amplitude');
 %spectrum(oo);
@@ -59,40 +59,51 @@ subplot(2,1,1);
 plot(varaa);
 title('Loss function of validation data a-sound');
 ylabel('Variance');
+ylim([0 0.08]);
 xlabel('Model Order');
 subplot(2,1,2);
 plot(varoo);
+[mi, i] = min(varoo)
 title('Loss function of validation data o-sound');
 ylabel('Variance');
+ylim([0 0.08]);
 xlabel('Model Order');
 %%
 
 % Calculate whiteness for whiteness test for different model orders.
-start = 17;
-for k = (start:start+4)
+aa_pr_s = [];
+oo_pr_s = [];
+for k = 1:20
+    aa_pr_s = [aa_pr_s sum(abs(diff(sign(resaa(:,k)))))/2/len_val];
+    oo_pr_s = [oo_pr_s sum(abs(diff(sign(resoo(:,k)))))/2/len_val];
+end
+aa_pr_s
+oo_pr_s
+
+%%
+% Calculate residual covariance for different model orders.
+start = 10;
+for k = (start:start+3)
     figure(3);
     subplot(4,1,k-start+1);
-    %covf([resaa(:,k); aa_val'])
-    index = -len_val+1:len_val-1;
-    %plot(index, xcorr(resaa(:,k), aa_val'));
-    %plot(resaa(:,k));
-    caa =covf([resaa(:,k) aa_val'], 100);%/sqrt(var(resaa(:,k))*var(aa_val')); 
-    plot(caa(2,:)');
+    [Reyaa, kk] = sig2crosscovfun(resaa(:,k), aa_val', 10);
+    plot(kk, Reyaa/sqrt(var(resaa(:,k))*var(aa_val')));
     aa_max = max(xcorr(resaa(:,k), aa_val'))
     title(sprintf('Residual Covariance plot a-sound order %d', k));
-    %ylabel('Variance');
+    ylabel('Correlation');
     xlabel('k');
-    ylim([-0.0005 0.0005]);
+    xlim([1 10]);
+    if k ~= 1; ylim([-0.2 0.2]); end;
+    %plot(resaa(:,k));
     figure(4);
     subplot(4,1,k-start+1);
-    %plot(index, xcorr(resoo(:,k), oo_val'));
-    %plot(resoo(:,k));
-    coo =covf([resoo(:,k) oo_val'], 100);%/sqrt(var(resoo(:,k))*var(oo_val')); 
-    plot(coo(2,:)');
+    [Reyoo, kk] = sig2crosscovfun(resoo(:,k), oo_val', 10);
+    plot(kk, Reyoo/sqrt(var(resoo(:,k))*var(oo_val')));
     title(sprintf('Residual Covariance plot o-sound order %d', k));
-    %ylabel('Variance');
+    ylabel('Correlation');
     xlabel('k');
-    ylim([-0.0005 0.0005]);
+    xlim([1 10]);
+    if k ~= 1; ylim([-0.2 0.2]); end;
 end
 %%
 
