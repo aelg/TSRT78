@@ -179,7 +179,7 @@ The problem this time is that a good order for the model must be found.
 Different model orders need to be validated and compared.
 A good way to do this is splitting the available data into two sets one set is used to estimate the model and the other set is used for validation.
 Now there is a couple of ways of validating that the model order is well choosen.
-The ways choosen for this assignment was by calculating the loss function for validation data and by residual covariance plots.
+The ways choosen for this assignment was by calculating the loss function for validation data and by the residuals and its covariance plots.
 
 The loss function $W_N$ is the entity that is minimized by the AR-estimation.
 Let the loss function depend on n $W_N(n)$ where n is model order.
@@ -230,8 +230,8 @@ This is an indication that the model for the a-sound might not be that good.
 After order 10 the loss functions seems to be more or less horizontal so this might be a good order estimate.
 
 When this is done the models should be validated.
-First $e(t)$ is calculated and checked for whiteness.
-This is done by checking the probability of a sign change for between $e(t)$ and $e(t+1)$.
+First $\epsilon(t)$ is calculated and checked for whiteness.
+This is done by checking the probability of a sign change for between $\epsilon(t)$ and $\epsilon(t+1)$.
 The results is
 
 \begin{tabular}{l|l|l|l|l|l|l|l|l|l|l}
@@ -252,7 +252,7 @@ A plot that is close to zero means that the model is good.
 Here it seems that model order should be a bit higher for the a-sound than for the o-sound.
 The o-sound seems fine for model order 4.
 The a-sound still is a bit above zero and there is some positive correlation with the input signal.
-This is also true for higer order models of tha a-sound.
+This is also true for higer order models of the a-sound.
 This is not that much though.
 
 Now the estimations can be tested by generating sounds from the models.
@@ -264,8 +264,8 @@ The generated files sounds a bit syntetic but you can distinguish the a-sound fr
 \subsection{Conclusion}
 
 With all of this a reasonable model order for the o-sound seems to be 4.
-This model order has done well on all the validation methods it has benn tested with.
-The model order for the a-sound should probably be a bit higher altohugh a good conclusion is hard to reach.
+This model order has done well on all the validation methods it has been tested with.
+The model order for the a-sound should probably be a bit higher although a good conclusion is hard to reach.
 A model order of 8 to 10 is probably good.
 It seems that it is possible to create reasonably good models for the vowels a and o.
 
