@@ -4,6 +4,7 @@ Fs=8000;
 w = detrend(y(2, 4300:end));
 len = length(w);
 x = 0:2/len:1.9999999999;
+a = 0.27:2/len:0.29
 
 freq_dom = 0.28;
 B = 0.01;
@@ -20,16 +21,19 @@ plot(x,abs(fft(w)));
 figure(2);
 plot(abs(fft(w_filt)));
 
-E_tot = sig_pow(w)
-E_dom = sig_pow(w_filt)
+Ts = 1/8000;
+
+E_tot = sig_pow(w, Ts)
+E_dom = sig_pow(w_filt, Ts)
 
 distorsion_time = 1-E_dom/E_tot
 
 w_fft = fft(w);
 
-E_tot = sig_pow(w_fft)
+%E_tot = sig_pow(w_fft, Ts)
+E_tot = w_fft*w_fft' * Ts/len
 w_fft_dom = [w_fft(floor((freq_dom-B)*len/2):floor((freq_dom+B)*len/2)) w_fft(floor(len-(freq_dom+B)*len/2):floor(len-(freq_dom-B)*len/2))];
-E_dom = sum(abs(w_fft_dom).^2)/len;
+E_dom = w_fft_dom*w_fft_dom'*Ts/len;
 
 distorsion_freq = 1- E_dom/E_tot
 
