@@ -61,11 +61,12 @@ for i = 1:160:length(sen)-160
         m.a = poly(r2);
     end
     %A = 1;
-    train = sqrt(A*(160/pulse))*(rem((1:160)+delay,pulse) == 1)';
+    %train = sqrt(A*(160/pulse))*(rem((1:160)+delay,pulse) == 1)';
+    train = sqrt(A*(rem((1:160)+delay,pulse) == 1))';
     %train = sqrt(A*(rem((1:160)+delay,pulse))) == 1)';
     train = sqrt(A)*(rem((1:160)+delay,pulse) == 1)';
-    if A < 0.1 +10 
-        train = 0.4*sqrt(mean(r))*randn(160, 1)+train;
+    if A < 0.1
+        train = 0.3*sqrt(mean(r))*randn(160, 1)+train;
     end
     alltrain = [alltrain train'];
     %train = train + sqrt(A2*(160/pulse2))*(rem((1:161),pulse2) == 1)';
@@ -90,38 +91,3 @@ plot(psd(spectrum.welch, (est)));
 [bpb, bpa] = butter(5, [0.12 0.7]);
 %est = filtfilt(bpb, bpa, est);
 wavwrite(est, 'out.wav');
-%sound(sen);
-%%
-%{
-[th, P, lam, epsi] = sig2ar(sen',na);
-%len = len*2;
-W0 = 0.035
-W0 = 0.016
-root_angle = angle(roots(th))
-for i = 1:length(root_angle)
-    if root_angle(i) == 0
-        root_angle(i) = 100000;
-    end
-end
-pulse = floor(2/W0)
-A = 0.1
-%pulse = floor(8/(min(abs(root_angle))/pi))
-est = rand(na,1);
-%e = randn(len,1).*(rem((1:len),pulse)<pulse/2)';
-%e = randn(len,1).*(rem((1:len),pulse) == 0)';
-e = A*sqrt(len/pulse)*(rem((1:len),pulse) == 0)';
-%e = e+rand(len,1)*0.01
-%e = e .* randn(size(e));
-%e = e + 0.005*randn(size(e));
-%e = conv(e, triang(pulse/2), 'same');
-for i = na+1:len
-    est = [est; est(i-1:-1:i-na)'*-th+e(i)];
-end
-
-figure(3);
-%plot(x,abs(fft(est)));
-plot(psd(spectrum.welch, (est)));
-est = est(200:end-200);
-sound(est)
-sound(sen)
-%}
