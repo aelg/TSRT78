@@ -25,7 +25,7 @@ plot(lambada);
 %}
 %%
 
-na = 20;
+na = 8;
 cov = [];
 est = zeros(length(sen),1);
 delay = 0;
@@ -61,17 +61,18 @@ for i = 1:160:length(sen)-160
         m.a = poly(r2);
     end
     %A = 1;
+    A = 0.1*A;
     %train = sqrt(A*(160/pulse))*(rem((1:160)+delay,pulse) == 1)';
-    train = sqrt(A*(rem((1:160)+delay,pulse) == 1))';
+    %train = sqrt(A*(rem((1:160)+delay,pulse) == 1))';
     %train = sqrt(A*(rem((1:160)+delay,pulse))) == 1)';
     train = sqrt(A)*(rem((1:160)+delay,pulse) == 1)';
-    if A < 0.1
-        train = 0.3*sqrt(mean(r))*randn(160, 1)+train;
+    if A < 0.1 +10;
+        train = 0.2*sqrt(mean(r))*randn(160, 1)+train;
     end
     alltrain = [alltrain train'];
     %train = train + sqrt(A2*(160/pulse2))*(rem((1:161),pulse2) == 1)';
     delay = rem(160+delay, pulse);
-    delay = 0;
+    %delay = 0;
     %cc = size(cov)
     %size(est(seg))
     %ll = length([zeros(1, cut) cov zeros(1, 60)])
