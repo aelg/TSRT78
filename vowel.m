@@ -1,4 +1,4 @@
-%linwovel.m
+%vowel.m
 
 % Load and detrend data
 Fs=8000;
@@ -32,8 +32,6 @@ plot(x, abs(fft(oo)));
 title('DFT o-sound');
 xlabel('Hz');
 ylabel('Amplitude');
-%spectrum(oo);
-%plot(psd(spectrum.welch, (oo)));
 %%
 
 % Validation of different orders.
@@ -82,10 +80,11 @@ oo_pr_s
 
 %%
 % Calculate residual covariance for different model orders.
-start = 10;
+start = 1;
 for k = (start:start+3)
     figure(3);
     subplot(4,1,k-start+1);
+    % Check course book for code for this function
     [Reyaa, kk] = sig2crosscovfun(resaa(:,k), aa_val', 10);
     plot(kk, Reyaa/sqrt(var(resaa(:,k))*var(aa_val')));
     aa_max = max(xcorr(resaa(:,k), aa_val'))
@@ -97,7 +96,7 @@ for k = (start:start+3)
     %plot(resaa(:,k));
     figure(4);
     subplot(4,1,k-start+1);
-    [Reyoo, kk] = sig2crosscovfun(resoo(:,k), oo_val', 10);
+    [Reyoo, kk] = sig2crosscovfun(resoo(:,k), oo_val', 10); 
     plot(kk, Reyoo/sqrt(var(resoo(:,k))*var(oo_val')));
     title(sprintf('Residual Covariance plot o-sound order %d', k));
     ylabel('Correlation');
@@ -106,48 +105,18 @@ for k = (start:start+3)
     if k ~= 1; ylim([-0.2 0.2]); end;
 end
 %%
+% Generate soundfiles.
 
-lambada = [];
-for i = (1:50)
-    [th, P, lam, epsi] = sig2ar(oo',i);
-    lambada = [lambada lam];
-end
-figure(4);
-plot(lambada);
+maa = ar(aa_est, 8);
+moo = ar(oo_est, 4);
+pulseaa = floor(8000/130);
+pulseoo = floor(8000/130);
 
+A = 0.1;
+eaa = A*(rem((1:len),pulseaa) == 0)';
+eoo = A*(rem((1:len),pulseoo) == 0)';
 
-[th, P, lam, epsi] = sig2ar(oo',na);
-%len = len*2;
-W0 = 0.035
-%W0 = 0.016
-root_angle = angle(roots(th))
-for i = 1:length(root_angle)
-    if root_angle(i) == 0
-        root_angle(i) = 100000;
-    end
-end
-pulse = floor(2/W0)
-A = 0.001
-%pulse = floor(8/(min(abs(root_angle))/pi))
-est = rand(na,1);
-%e = randn(len,1).*(rem((1:len),pulse)<pulse/2)';
-%e = randn(len,1).*(rem((1:len),pulse) == 0)';
-e = A*sqrt(len/pulse)*(rem((1:len),pulse) == 0)';
-%e = e+rand(len,1)*A*1;
-%e = e .* randn(size(e));
-%e = e + 0.005*randn(size(e));
-%e = conv(e, triang(pulse/2), 'same');
-for i = na+1:len
-    est = [est; est(i-1:-1:i-na)'*th+e(i)];
-end
-th
-est = filter(1,[1 th'], e);
-
-
-figure(3);
-%plot(x,abs(fft(est)));
-plot(psd(spectrum.welch, (est)));
-plot(x, abs(fft(est)));
-est = est(200:end-200);
-%sound(est)
-%sound(oo)
+estaa = filter(1,maa.a, eaa);
+estoo = filter(1,moo.a, eoo);
+wavwrite(estaa, 'a.wav');
+wavwrite(estoo, 'o.wav');

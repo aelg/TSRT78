@@ -255,12 +255,19 @@ The a-sound still is a bit above zero and there is some positive correlation wit
 This is also true for higer order models of tha a-sound.
 This is not that much though.
 
+Now the estimations can be tested by generating sounds from the models.
+This is done by creating a pulse train with the same period as the recorded sounds and then filtering it with the filter created in the AR estimation.
+The period is easy to find in the DFTs of the recordings.
+The amplitude of the pulse train is found by simple testing until the generated sounds has a reasonable volume.
+The generated files sounds a bit syntetic but you can distinguish the a-sound from the o-sound.
+
 \subsection{Conclusion}
 
 With all of this a reasonable model order for the o-sound seems to be 4.
 This model order has done well on all the validation methods it has benn tested with.
 The model order for the a-sound should probably be a bit higher altohugh a good conclusion is hard to reach.
 A model order of 8 to 10 is probably good.
+It seems that it is possible to create reasonably good models for the vowels a and o.
 
 \begin{figure}[H]
   \centering
@@ -327,8 +334,8 @@ e_1(t)\sim N(0,\lambda),e_2(t)\sim N(0,\sqrt{N_{num}A/D}$$
 %\end{figure}
 
 
-
 \clearpage
+\section{Source Code}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
@@ -340,6 +347,6 @@ e_1(t)\sim N(0,\lambda),e_2(t)\sim N(0,\sqrt{N_{num}A/D}$$
   stringstyle=\color{mauve},         % string literal style
   showstringspaces=false,         % underline spaces within strings
 }
-%\lstinputlisting[language=C++]{slotted_aloha.cc}
+\lstinputlisting[language=Matlab]{vowel.m}
 \end{document}
 
