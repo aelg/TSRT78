@@ -26,8 +26,8 @@ puritytime = 1- energydom./energytot
 %%
 domlimits=(floor(0.27*length(whistle)/2):floor(0.29*length(whistle)/2));
 
-Energytot = sum(abs(WHISTLE).^2)/8000;
-Energydom = 2*sum(abs(WHISTLE(domlimits)).^2)/8000;
+Energytot = sum(abs(WHISTLE).^2)/(length(WHISTLE)*8000)
+Energydom = 2*sum(abs(WHISTLE(domlimits)).^2)/(length(WHISTLE)*8000)
 
 purityfreq = 1 - Energydom./Energytot
 
@@ -61,7 +61,8 @@ lam
 %armodell enligt matlab
 Model = ar(whistle, 2);
 
-
+%%
+abs(roots(Model.a))
 
 
 
@@ -75,6 +76,15 @@ end
 
 plot(error);
 
+%%
+
+%psd cehck för vissling
+A=psd(spectrum.welch, whistle);
+B = psd(spectrum.welch, e);
+figure;
+plot(A); 
+figure;
+plot(B)
 %%
 
 aaa = y;
