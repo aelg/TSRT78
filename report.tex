@@ -215,11 +215,58 @@ The o-sound has one peak that are higher than the others then there are two more
 This is an indication that the a-sound probably needs a higher order model than the o-sound.
 
 After this an AR-model is estimated for orders 1-20 and the loss function of the validation data is plotted with respect to model order.
-The result can be seen in figure \ref{loss_function}.
-The 
 
+The result can be seen in figure \ref{loss_function}. 
 
-\subsection{Results}
+The o-sound has a clear "knee" at order 2 and an at least local minima at order 5.
+This suggest that the AR of order 2 probably is sufficient but orders up to 5 will probably improve the model.
+Higher model orders than 5 seems unnecessary.
+
+The order of the a-sound is harder to estimate.
+This plot has no clear "knee" and the estimation seems to be getting better and better when the model order increases.
+The loss function for the a-sound is also larger than for the o-sound.
+This is an indication that the model for the a-sound might not be that good.
+After order 10 the loss functions seems to be more or less horizontal so this might be a good order estimate.
+
+When this is done the models should be validated.
+First $\epsilon(t)$ is calculated and checked for whiteness.
+This is done by checking the probability of a sign change for between $\epsilon(t)$ and $\epsilon(t+1)$.
+The results is
+
+\begin{tabular}{l|l|l|l|l|l|l|l|l|l|l}
+  \hline
+  Model order & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+  A-sound & 0.344 & 0.657 & 0.439 & 0.472 & 0.462 & 0.474 & 0.485 & 0.468 & 0.429 & 0.502 \\
+  O-sound & 0.122 & 0.520 & 0.567 & 0.595 & 0.539 & 0.554 & 0.551 & 0.542 & 0.555 & 0.552 \\
+\end{tabular}
+
+Both the signals seems to have models that change sign with about 50 \% chance when the model order is higher than 2.
+For the o-sound even the second order model seems to behave well.
+
+After this is done another test is used on the same $e(t)$.
+$R_{ey}$ the residual covariance is estimated and then plotted for model orders 1-4.
+The result is in figures \ref{res_cov_a} and \ref{res_cov_o}.
+Notice that the plot for model order 1 is scaled differently than the rest.
+A plot that is close to zero means that the model is good.
+Here it seems that model order should be a bit higher for the a-sound than for the o-sound.
+The o-sound seems fine for model order 4.
+The a-sound still is a bit above zero and there is some positive correlation with the input signal.
+This is also true for higer order models of the a-sound.
+This is not that much though.
+
+Now the estimations can be tested by generating sounds from the models.
+This is done by creating a pulse train with the same period as the recorded sounds and then filtering it with the filter created in the AR estimation.
+The period is easy to find in the DFTs of the recordings.
+The amplitude of the pulse train is found by simple testing until the generated sounds has a reasonable volume.
+The generated files sounds a bit syntetic but you can distinguish the a-sound from the o-sound.
+
+\subsection{Conclusion}
+
+With all of this a reasonable model order for the o-sound seems to be 4.
+This model order has done well on all the validation methods it has been tested with.
+The model order for the a-sound should probably be a bit higher although a good conclusion is hard to reach.
+A model order of 8 to 10 is probably good.
+It seems that it is possible to create reasonably good models for the vowels a and o.
 
 \begin{figure}[H]
   \centering
@@ -240,13 +287,13 @@ The
 \begin{figure}[H]
   \centering
   \includegraphics[width=14cm]{residual_covariance_a.png}
-  \caption{The residual covariance of different model orders for the a-sound}
+  \caption{The residual covariance of different model orders for the a-sound\label{res_cov_a}}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=14cm]{residual_covariance_o.png}
-  \caption{The residual covariance of different model orders for the o-sound}
+  \caption{The residual covariance of different model orders for the o-sound\label{res_cov_o}}
 \end{figure}
 
 \section{Sentence}
@@ -256,26 +303,27 @@ In the last assignment an AR(8)-model is used to estimate a recorded sentence. A
 
 \subsection{Theoretical overview}
 \label{Theo}
-The theory in this assignment is mostly the same as in the first two assignments. The biggest difference is that the sentence is divided into segments of 160 samples each. For each segment an AR-model is calculated. 
-
-To decide the optimal amplitude $A$ and period $D$ for the input pulse train of each segment the covariancefunction for the modeled signal is used. The square root of the maximum of the autocovariancefunction is the amplitude of the pulse train and the period of the pulse train is the time where the autocovariancefunction reaches its maximum.
-
-To be sure to get a stable filter unstable poles must be made stable. This can be done by mirroring them in the unit circle. Also In every segment the mean of the original signal is removed, since the estimation assumes a mean zero.  
+The theory in this assignment is mostly the same as in the first two assignments.
+The biggest difference is that the sentence is divided into segments of 160 samples each. 
+For each segment an AR-model is calculated. 
+To decide the optimal amplitude $A$ and period $D$ for the input pulse train of each segment the covariance function for the modeled signal is used. 
+The square root of the maximum of the auto covariance function is the amplitude of the pulse train and the period of the pulse train is the time where the auto covariance function reaches its maximum. 
+To be sure to get a stable filter unstable poles must be made stable. 
+This can be done by mirroring them in the unit circle. 
+Also in every segment the mean of the original signal is removed, since the estimation assumes a mean zero.  
 
 \subsection{Practical Execution}
-The estimation is done according to the description in section~\ref{Theo}. The result of this is a very noisy voice saying the sentence.
+The estimation is done according to the description in section~\ref{Theo} but to get a better result some modifications are made.
+Instead of using a pure pulse train as input, noise is added to it everywhere.
+The following noise is input $u(t)$ to the filter.
+$\lambda$ is the mean of the auto covariance function of the segment $N_{num}$ are the number of samples in the segment and $A$ and $D$ are the same as described in section~\ref{Theo}. 
 
-One of the subtasks of the last assignment is to set the amplitude of the noise equal to one in all segments. Doing that keeps the voice in the sound but amplifies the noise even more. 
-
-Changing the model to a higher order gives a better result while changing to a lower makes the result worse. 
-
-To get a better result some modifications are made. Instead of using a pure pulse train as input, noise is added to it everywhere. The following noise is input $u(t)$ to the filter. $\lambda$ is the mean of the autocovariancefunction of the segment $N_num$ are the number of samples in the segment and $A$ and $D$ are the same as described in section~\ref{Theo}. 
-
-\[u(t)= e_1(t)+e_2(t)\sum_{k=0} ^N \delta(t-kD),
-e_1(t)\sim N(0,\lambda),e_2(t)\sim N(0,\sqrt{N_{num}A/D})$$
+\[u(t)= e_1(t)+e_2(t)sum_{k=0} ^N \delta(t-kD),
+e_1(t)\sim N(0,\lambda),e_2(t)\sim N(0,\sqrt{N_{num}A/D}$$
 
 \section{Conclusion}
 An eight order AR-model can model a voice so good that it can be used in a cellphone. However it has to be modified to be really good. The reason that AR is used is that it compresses the signal. The whole signal is not sent but only the coefficients in $\theta$. In this case where an eight order AR-model is used for an interval of 160 samples the compression is 95\% (8/160 = 0.05). 
+
 
 
 
@@ -286,8 +334,8 @@ An eight order AR-model can model a voice so good that it can be used in a cellp
 %\end{figure}
 
 
-
 \clearpage
+\section{Source Code}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
@@ -299,6 +347,6 @@ An eight order AR-model can model a voice so good that it can be used in a cellp
   stringstyle=\color{mauve},         % string literal style
   showstringspaces=false,         % underline spaces within strings
 }
-%\lstinputlisting[language=C++]{slotted_aloha.cc}
+\lstinputlisting[language=Matlab]{vowel.m}
 \end{document}
 
