@@ -113,11 +113,9 @@ which is given by
 \label{enwhis}
 \end{equation}
 
-To resample the model to a signal a signal pulse train of white gaussian noise is filtered by the filter consisting of the AR-coeffiecients.
+To resample the model to a signal a signal pulse train of white gaussian noise is filtered by the filter consisting of the AR-coeffiecients $\theta$.
 
 An other way of measuring purity than harmonic distortion is to use an AR-model and measure the distance to the poles from the unit circle. A pure sine-wave has its poles on the unit circle and a long distance means an unpure signal.
-
-
 
 
 \subsection{Practical Execution}
@@ -140,7 +138,11 @@ E_{tot.} \approx 0.001385, E_{dom. freq.}\approx 0.001337, Dist_{freq.} = 0.0348
 
 The second order AR-model is calculated as described in section~\ref{ar}.  The AR-model of the whistle has $H(z)$ with roots $z=0.6435 \pm 0.7558i$, both with absolute value $0.9926$. That implies that the whistle is very pure. 
 
-To verify that the AR(2) model is a good choise of estimate, the total error $\lambda$ is computed for different orders of AR-models. The results in shown in figure~\ref{whisknee}. A small error is always  a better estimate. A filter with more coefficients is on the other hand more expensive. To obtain a good but still cheap filter a "knee" is searched for in the error-function. From figure~\ref{whisknee} it is obvious that 2 is the best choice of order.   
+To verify that the AR(2) model is a good choise of estimate, the total error $\lambda$ is computed for different orders of AR-models. This is called the loss-function The total error is 
+
+\[\sum_{k=0}^{N-1}(y(k)-\hat{y})$$
+
+where $y(k)$ is the original function and $\hat{y}$ is the resampled model of the original function.  The results in shown in figure~\ref{whisknee}. A small error is always  a better estimate. A filter with more coefficients is on the other hand more expensive. To obtain a good but still cheap filter a "knee" is searched for in the loss-function. From figure~\ref{whisknee} it is obvious that 2 is the best choice of order.   
 
 \begin{figure}[H]
 \centering
@@ -163,7 +165,7 @@ The spectrum of the signal can also be approximated using welchs method of estim
 \end{figure}
 
 
-\subsection{Results}
+\subsection{Conclusion}
 All test of purity of the whistle indicates that the whistle is very pure. Although it contains some overtones. The energies calculated in the frequency domain are almost the same as in the time domain. Since the filter is not ideal and the dominating frequencies are chosen by hand this is as good results as expected. An AR-model of second order is a good estimate of the whistle. It does not model every frequency exactly right but it is really good for the dominating frequencies. 
 
 \section{Vowel}
@@ -177,9 +179,9 @@ The estimated models should also be validated and different order models should 
 An AR model of the sound can be found in the same way as was done in the first assignment.
 The problem this time is that a good order for the model must be found.
 Different model orders need to be validated and compared.
-A good way to do this is splitting the available data into two sets one set is used to estimate the model and the other set is used for validation.
-Now there is a couple of ways of validating that the model order is well choosen.
-The ways choosen for this assignment was by calculating the loss function for validation data and by residual covariance plots.
+A good way to do this is splitting the available data into two sets. One set is used to estimate the model and the other set is used for validation.
+Now there is a couple of ways of validating that the model order is well chosen.
+The ways chosen for this assignment was by calculating the loss function for validation data and by residual covariance plots.
 
 The loss function $W_N$ is the entity that is minimized by the AR-estimation.
 Let the loss function depend on n $W_N(n)$ where n is model order.
@@ -193,21 +195,17 @@ This means that the loss function for validation data can be used to estimate mo
 
 The residual covarince approach for model validation exploits the fact that an AR model is filtering white noise.
 This means that if the inverse filter is applied to validation data the result should be white noise.
-This can be used directly by checking that what you get is white noise.
-A way of checking for white noise is to that the signal changes sign with probability 0.5.
-Another way to use this is the following.
-Let this inverse filterd data be $\epsilon(t)$ then $R_{\epsilon \epsilon}(\tau) = \lambda\delta(t)$.
+Let this inverse filtered data be $\epsilon(t)$ then $R_{\epsilon \epsilon}(\tau) = \lambda\delta(t)$.
 Since $\epsilon(t)$ is white noise $R_{\epsilon y}(\tau) = E\epsilon(t) y(t-\tau) = 0$ for $\tau > 0$.
 This can then be used for validation of models.
 The estimation of $R_{\epsilon y}(\tau)$ should not be to far from zero.
 
 \subsection{Practical Execution}
-To get data to use in the assignment two sounds are recorded one with an a-sound and one with an o-sound.
+To get data to use in the assignment two sounds are recorded. One with an a-sound and one with an o-sound.
 The recordings are each two seconds long.
 These files are then imported into Matlab and the means of the signals are removed.
 The signals are then split into estimation and validation data.
-Two thirds of the signals are used for estimation and one third is used for validation.
-The DFT of the is then generated and plotted.
+The DFT of the signal is then generated and plotted.
 DFTs can be used to get a rough estimate of model order by counting the number of peaks in them.
 Each pair of complex-conjugated poles of the AR model will create a peak in the model spectrum.
 This means that counting the peaks in the spectrum and multiplying by two will be an estimate of the model order.
@@ -217,50 +215,11 @@ The o-sound has one peak that are higher than the others then there are two more
 This is an indication that the a-sound probably needs a higher order model than the o-sound.
 
 After this an AR-model is estimated for orders 1-20 and the loss function of the validation data is plotted with respect to model order.
-The result can be seen in figure \ref{loss_function}. 
+The result can be seen in figure \ref{loss_function}.
+The 
 
-The o-sound has a clear "knee" at order 2 and an at least local minima at order 5.
-This suggest that the AR of order 2 probably is sufficient but orders up to 5 will probably improve the model.
-Higher model orders than 5 seems unnecessary.
 
-The order of the a-sound is harder to estimate.
-This plot has no clear "knee" and the estimation seems to be getting better and better when the model order increases.
-The loss function for the a-sound is also larger than for the o-sound.
-This is an indication that the model for the a-sound might not be that good.
-After order 10 the loss functions seems to be more or less horizontal so this might be a good order estimate.
-
-When this is done the models should be validated.
-First $e(t)$ is calculated and checked for whiteness.
-This is done by checking the probability of a sign change for between $e(t)$ and $e(t+1)$.
-The results is
-
-\begin{tabular}{l|l|l|l|l|l|l|l|l|l|l}
-  \hline
-  Model order & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
-  A-sound & 0.344 & 0.657 & 0.439 & 0.472 & 0.462 & 0.474 & 0.485 & 0.468 & 0.429 & 0.502 \\
-  O-sound & 0.122 & 0.520 & 0.567 & 0.595 & 0.539 & 0.554 & 0.551 & 0.542 & 0.555 & 0.552 \\
-\end{tabular}
-
-Both the signals seems to have models that change sign with about 50 \% chance when the model order is higher than 2.
-For the o-sound even the second order model seems to behave well.
-
-After this is done another test is used on the same $e(t)$.
-$R_{ey}$ the residual covariance is estimated and then plotted for model orders 1-4.
-The result is in figures \ref{res_cov_a} and \ref{res_cov_o}.
-Notice that the plot for model order 1 is scaled differently than the rest.
-A plot that is close to zero means that the model is good.
-Here it seems that model order should be a bit higher for the a-sound than for the o-sound.
-The o-sound seems fine for model order 4.
-The a-sound still is a bit above zero and there is some positive correlation with the input signal.
-This is also true for higer order models of tha a-sound.
-This is not that much though.
-
-\subsection{Conclusion}
-
-With all of this a reasonable model order for the o-sound seems to be 4.
-This model order has done well on all the validation methods it has benn tested with.
-The model order for the a-sound should probably be a bit higher altohugh a good conclusion is hard to reach.
-A model order of 8 to 10 is probably good.
+\subsection{Results}
 
 \begin{figure}[H]
   \centering
@@ -281,42 +240,42 @@ A model order of 8 to 10 is probably good.
 \begin{figure}[H]
   \centering
   \includegraphics[width=14cm]{residual_covariance_a.png}
-  \caption{
-    \label{res_cov_a}
-    The residual covariance of different model orders for the a-sound}
+  \caption{The residual covariance of different model orders for the a-sound}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=14cm]{residual_covariance_o.png}
-  \caption{
-    \label{res_cov_o}
-    The residual covariance of different model orders for the o-sound}
+  \caption{The residual covariance of different model orders for the o-sound}
 \end{figure}
 
 \section{Sentence}
 
 \subsection{Task}
-In the last assignment an AR(8)-model is used to estimate a recorded sentence. AR-models of 8th order are used in GSM encoding in mobile phones.
+In the last assignment an AR(8)-model is used to estimate a recorded sentence. AR-models of 8th order are used in GSM encoding in cellphones.
 
 \subsection{Theoretical overview}
 \label{Theo}
-The theory in this assignment is mostly the same as in the first two assignments. The biggest difference is that the sentence is divided into segments of 160 samples each. For each segment an AR-model is calculated. To decide the optimal amplitude $A$ and period $D$ for the input pulse train of each segment the covariancefunction for the modeled signal is used. The square root of the maximum of the autocovariancefunction is the amplitude of the pulse train and the period of the pulse train is the time where the autocovariancefunction reaches its maximum. To be sure to get a stable filter unstable poles must be made stable. This can be done by mirroring them in the unit circle. Also In every segment the mean of the original signal is removed, since the estimation assumes a mean zero.  
+The theory in this assignment is mostly the same as in the first two assignments. The biggest difference is that the sentence is divided into segments of 160 samples each. For each segment an AR-model is calculated. 
+
+To decide the optimal amplitude $A$ and period $D$ for the input pulse train of each segment the covariancefunction for the modeled signal is used. The square root of the maximum of the autocovariancefunction is the amplitude of the pulse train and the period of the pulse train is the time where the autocovariancefunction reaches its maximum.
+
+To be sure to get a stable filter unstable poles must be made stable. This can be done by mirroring them in the unit circle. Also In every segment the mean of the original signal is removed, since the estimation assumes a mean zero.  
 
 \subsection{Practical Execution}
-The estimation is done according to the description in section~\ref{Theo} but to get a better result some modifications are made. Instead of using a pure pulse train as input, noise is added to it everywhere. The following noise is input $u(t)$ to the filter. $\lambda$ is the mean of the autocovariancefunction of the segment $N_num$ are the number of samples in the segment and $A$ and $D$ are the same as described in section~\ref{Theo}. 
+The estimation is done according to the description in section~\ref{Theo}. The result of this is a very noisy voice saying the sentence.
 
-\[u(t)= e_1(t)+e_2(t)sum_{k=0} ^N \delta(t-kD),
-e_1(t)\sim N(0,\lambda),e_2(t)\sim N(0,\sqrt{N_{num}A/D}$$
+One of the subtasks of the last assignment is to set the amplitude of the noise equal to one in all segments. Doing that keeps the voice in the sound but amplifies the noise even more. 
 
+Changing the model to a higher order gives a better result while changing to a lower makes the result worse. 
 
+To get a better result some modifications are made. Instead of using a pure pulse train as input, noise is added to it everywhere. The following noise is input $u(t)$ to the filter. $\lambda$ is the mean of the autocovariancefunction of the segment $N_num$ are the number of samples in the segment and $A$ and $D$ are the same as described in section~\ref{Theo}. 
 
-
-
-
-\subsection{Results}
+\[u(t)= e_1(t)+e_2(t)\sum_{k=0} ^N \delta(t-kD),
+e_1(t)\sim N(0,\lambda),e_2(t)\sim N(0,\sqrt{N_{num}A/D})$$
 
 \section{Conclusion}
+An eight order AR-model can model a voice so good that it can be used in a cellphone. However it has to be modified to be really good. The reason that AR is used is that it compresses the signal. The whole signal is not sent but only the coefficients in $\theta$. In this case where an eight order AR-model is used for an interval of 160 samples the compression is 95\% (8/160 = 0.05). 
 
 
 
