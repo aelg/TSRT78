@@ -308,22 +308,25 @@ In the last assignment an AR(8)-model is used to estimate a recorded sentence. A
 
 \subsection{Theoretical overview}
 \label{Theo}
-The theory in this assignment is mostly the same as in the first two assignments. The biggest difference is that the sentence is divided into segments of 160 samples each. For each segment an AR-model is calculated. To decide the optimal amplitude $A$ and period $D$ for the input pulse train of each segment the covariancefunction for the modeled signal is used. The square root of the maximum of the autocovariancefunction is the amplitude of the pulse train and the period of the pulse train is the time where the autocovariancefunction reaches its maximum. To be sure to get a stable filter unstable poles must be made stable. This can be done by mirroring them in the unit circle. Also In every segment the mean of the original signal is removed, since the estimation assumes a mean zero.  
+The theory in this assignment is mostly the same as in the first two assignments.
+The biggest difference is that the sentence is divided into segments of 160 samples each. 
+For each segment an AR-model is calculated. 
+To decide the optimal amplitude $A$ and period $D$ for the input pulse train of each segment the covariance function for the modeled signal is used. 
+The square root of the maximum of the auto covariance function is the amplitude of the pulse train and the period of the pulse train is the time where the auto covariance function reaches its maximum. 
+To be sure to get a stable filter unstable poles must be made stable. 
+This can be done by mirroring them in the unit circle. 
+Also in every segment the mean of the original signal is removed, since the estimation assumes a mean zero.  
 
 \subsection{Practical Execution}
-The estimation is done according to the description in section~\ref{Theo} but to get a better result some modifications are made. Instead of using a pure pulse train as input, noise is added to it everywhere. The following noise is input $u(t)$ to the filter. $\lambda$ is the mean of the autocovariancefunction of the segment $N_num$ are the number of samples in the segment and $A$ and $D$ are the same as described in section~\ref{Theo}. 
+The estimation is done according to the description in section~\ref{Theo} but to get a better result some modifications are made.
+Instead of using a pure pulse train as input, noise is added to it everywhere.
+The following noise is input $u(t)$ to the filter.
+$\lambda$ is the mean of the auto covariance function of the segment $N_{num}$ are the number of samples in the segment and $A$ and $D$ are the same as described in section~\ref{Theo}. 
 
 \[u(t)= e_1(t)+e_2(t)sum_{k=0} ^N \delta(t-kD),
 e_1(t)\sim N(0,\lambda),e_2(t)\sim N(0,\sqrt{N_{num}A/D}$$
 
-
-
-
-
-
-\subsection{Results}
-
-\section{Conclusion}
+\subsection{Conclusion}
 
 
 
