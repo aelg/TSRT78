@@ -128,22 +128,24 @@ The distortion of the signal can be calculated in two different ways. Either the
 The energy for the whole signal in the the time-domain is calculated according to equation \ref{A}. The energy for the dominating frequencies is acquired by filtering the signal with a bandpassfilter with the dominating frequencies in the passband. The dominating frequencies for the whistle can be approximated to 1080-1160 Hz. 
 
 \begin{center}
-\begin{tabular}{l|l|l}
+\begin{tabular}{|l|l|l|}
   \hline
   $E_{\mathrm{tot.}}$ &  $E_{\mathrm{dom. freq.}}$ & $\mathrm{Dist}_{\mathrm{time}}$ \\
   \hline
-  0.001385 & 0.001314 & 0.05109
+  0.001385 & 0.001314 & 0.05109 \\
+  \hline
 \end{tabular}
 \end{center}
 
 The energy for the whole signal in the frequency-domain is calculated according to equation \ref{enwhis}. The energy for the dominating frequencies can be approximated with the same sum but over only the dominating frequencies. 
 
 \begin{center}
-\begin{tabular}{l|l|l}
+\begin{tabular}{|l|l|l|}
   \hline
   $E_{\mathrm{tot.}}$ &  $E_{\mathrm{dom. freq.}}$ & $\mathrm{Dist}_{\mathrm{freq.}}$ \\
   \hline
-  0.001385 & 0.001337 & 0.03483
+  0.001385 & 0.001337 & 0.0348 \\
+  \hline
 \end{tabular}
 \end{center}
 % inse vad som är fel med energin och lös det!
