@@ -7,7 +7,8 @@
 \usepackage{float}
 \usepackage{listings}
 \usepackage{color}
-\title{Report lab 1}
+\title{TSRT78 Digital Signal Processing \\
+Report lab 1}
 \author{Group 22}
 \date{\today}
 
@@ -26,7 +27,7 @@
 
 \tableofcontents
 
-\pagebreak
+\clearpage
 
 \section{Introduction}
 This is a report for a laboration in the course Digital Signal Processing TSRT78.
@@ -52,14 +53,17 @@ The first assignment is about measuring the purity of a sound compared to a sine
 \subsubsection{Energy and harmonic distortion}
 A good way to approxiamate the purity of a periodic signal is to calculate the harmonic distorion. It is defined:
 
-\begin{equation}Dist = 1-\frac{E_{dom. freq.}}{E_{tot.}}\end{equation}
+\begin{equation}
+  \mathrm{Distorsion} = 1-\frac{E_{\mathrm{dom. freq.}}}{E_{\mathrm{tot.}}}
+\end{equation}
 
 The energy $E$ for a signal is defined as
 
-\begin{equation}E=\int_{0}^{T_{L}} \vert y(t)\vert ^2 dt=\frac{1}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}}\vert Y(\theta)\vert ^2d\theta \end{equation}
-%ssjukt fula integraler. bör fixas
+\[
+E=\int_{0}^{T_{L}} \vert y(t)\vert ^2 dt=\frac{1}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}}\vert Y(\theta)\vert ^2d\theta
+\]
 
-where $Y(\theta)$ is the fouriertransform of $y(t)$ and $T_L$ is the length of the signal. Since the signals in this laboratory are timediscrete, the energy can not be calculated this way. The integrals can instead be approximated as a sum of $N$ elements that have the width $T$, where $T$ is the sample period.
+where $Y(\theta)$ is the fouriertransform of $y(t)$ and $T_L$ is the length of the signal. Since the signals in this assignment are timediscrete, the energy can not be calculated this way. The integrals can instead be approximated as a sum of $N$ elements that have the width $T$, where $T$ is the sample period.
 
 \begin{equation}
 E=\int_{0}^{T_{L}} \vert y(t)\vert^2 dt\approx T\sum_{n=0}^{N-1}\vert y(n) \vert^2 
@@ -70,15 +74,16 @@ and
 
 \begin{equation}
 E=\frac{1}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}}\vert Y(\theta)\vert ^2d\theta \approx \frac{2\pi T}{N}\frac{1}{2\pi}\sum_{n=0}^{N-1}\vert Y(\theta) \vert^2=\frac{T}{N}\sum_{n=0}^{N-1}\vert Y(\theta) \vert^2 
+\label{enwhis}
 \end{equation}
 
 \subsubsection{AR}
 \label{ar} 
 AR means auto-regressive and is a way of modeling signals. $AR(n)$ is defined as
 
-\begin{equation} 
+\[
 y(t)+a_1y(t-1)+...a_ny(t-n)=e(t) 
-\end{equation}
+\]
 
 where $e(t)$ is white noise. In the frequency domain
 
@@ -90,28 +95,27 @@ where $e(t)$ is white noise. In the frequency domain
 
 With the notation
 
-\begin{equation}
+\[
 (\varphi(t) =(-y(t-1) ... -y(t-n))^T,\theta = (a_1 ... a_n)^T 
-\end{equation}
+\]
 
 $y(t)$ can be defined as the linear model
 
-\begin{equation}
+\[
 y(t)=\varphi^T(t)\theta+ e(t)
-\end{equation}
+\]
 
 The optimal use of $\theta$ is
 
-\begin{equation}
-\hat{\theta}=arg_{\theta}min \frac{1}{N}\sum_{t=1}^{\infty}(y(t)-\varphi^T(t)\theta)^2
-\end{equation}
+\[
+\hat{\theta}=\arg \min_{\theta} \frac{1}{N}\sum_{t=1}^{\infty}(y(t)-\varphi^T(t)\theta)^2
+\]
 
 which is given by
 
-\begin{equation}
+\[
 \hat{\theta}=\left(\sum_{t=1}^N\varphi(t)\varphi^T(t)\right)^{-1}\left(\sum_{t=1}^N\varphi(t)y(t)\right)
-\label{enwhis}
-\end{equation}
+\]
 
 To resample the model to a signal a signal pulse train of white gaussian noise is filtered by the filter consisting of the AR-coeffiecients $\theta$.
 
@@ -123,16 +127,25 @@ The distortion of the signal can be calculated in two different ways. Either the
 
 The energy for the whole signal in the the time-domain is calculated according to equation \ref{A}. The energy for the dominating frequencies is acquired by filtering the signal with a bandpassfilter with the dominating frequencies in the passband. The dominating frequencies for the whistle can be approximated to 1080-1160 Hz. 
 
-\begin{equation}
-E_{tot.} \approx 0.001385, E_{dom. freq.}\approx 0.001314, Dist_{time} = 0.05109
-\end{equation}
+\begin{center}
+\begin{tabular}{l|l|l}
+  \hline
+  $E_{\mathrm{tot.}}$ &  $E_{\mathrm{dom. freq.}}$ & $\mathrm{Dist}_{\mathrm{time}}$ \\
+  \hline
+  0.001385 & 0.001314 & 0.05109
+\end{tabular}
+\end{center}
 
 The energy for the whole signal in the frequency-domain is calculated according to equation \ref{enwhis}. The energy for the dominating frequencies can be approximated with the same sum but over only the dominating frequencies. 
 
-\begin{equation}
-E_{tot.} \approx 0.001385, E_{dom. freq.}\approx 0.001337, Dist_{freq.} = 0.03483
-\end{equation}
-
+\begin{center}
+\begin{tabular}{l|l|l}
+  \hline
+  $E_{\mathrm{tot.}}$ &  $E_{\mathrm{dom. freq.}}$ & $\mathrm{Dist}_{\mathrm{freq.}}$ \\
+  \hline
+  0.001385 & 0.001337 & 0.03483
+\end{tabular}
+\end{center}
 % inse vad som är fel med energin och lös det!
 
 
@@ -140,7 +153,9 @@ The second order AR-model is calculated as described in section~\ref{ar}.  The A
 
 To verify that the AR(2) model is a good choise of estimate, the total error $\lambda$ is computed for different orders of AR-models. This is called the loss-function The total error is 
 
-\[\sum_{k=0}^{N-1}(y(k)-\hat{y})$$
+\[
+  \sum_{k=0}^{N-1}(y(k)-\hat{y})
+\]
 
 where $y(k)$ is the original function and $\hat{y}$ is the resampled model of the original function.  The results in shown in figure~\ref{whisknee}. A small error is always  a better estimate. A filter with more coefficients is on the other hand more expensive. To obtain a good but still cheap filter a "knee" is searched for in the loss-function. From figure~\ref{whisknee} it is obvious that 2 is the best choice of order.   
 
@@ -150,7 +165,14 @@ where $y(k)$ is the original function and $\hat{y}$ is the resampled model of th
 \caption{The model-errors for different orders of AR-models.\label{whisknee}}
 \end{figure}
 
-The spectrum of the signal can also be approximated using welchs method of estimating Power spectral density. The figures \ref{psdwhis} and \ref{psdar2} shows the spectrum of the unparametric recorded whistle and the parametric AR(2)-model. These figures have the axes graded in $\pi \times rad/s$ and not $Hz$ as in figure~\ref{forwhis}. Converting the dominating frequencies from figure~\ref{forwhis} (1080-1160 Hz) to $\pi \times rad/s$ gives the frequencies 0.27-0.29 $\pi \times rad/s$. Both figure~\ref{psdwhis} and figure~\ref{psdar2} also have their most dominating frequencies in that area. Figure~\ref{psdwhis} also have peaks that are multiples of the dominating frequencies. Those are over-tones that are not dealt with when making the AR-model. The over-tones are amplified in figure~\ref{psdwhis} since it uses a logarithmic scale. 
+The spectrum of the signal can also be approximated using Welchs method of estimating power spectral density.
+The figures \ref{psdwhis} and \ref{psdar2} shows the spectrum of the unparametric recorded whistle and the parametric AR(2)-model.
+These figures have the axes graded in $\pi \times rad/s$ and not $Hz$ as in figure~\ref{forwhis}.
+Converting the dominating frequencies from figure~\ref{forwhis} (1080-1160 Hz) to $\pi \times rad/s$ gives the frequencies 0.27-0.29 $\pi \times rad/s$.
+Both figure~\ref{psdwhis} and figure~\ref{psdar2} also have their most dominating frequencies in that area.
+Figure~\ref{psdwhis} also have peaks that are multiples of the dominating frequencies.
+Those are over-tones that are not dealt with when making the AR-model.
+The over-tones are amplified in figure~\ref{psdwhis} since it uses a logarithmic scale. 
 
 \begin{figure}[H]
 \centering
@@ -168,6 +190,7 @@ The spectrum of the signal can also be approximated using welchs method of estim
 \subsection{Conclusion}
 All test of purity of the whistle indicates that the whistle is very pure. Although it contains some overtones. The energies calculated in the frequency domain are almost the same as in the time domain. Since the filter is not ideal and the dominating frequencies are chosen by hand this is as good results as expected. An AR-model of second order is a good estimate of the whistle. It does not model every frequency exactly right but it is really good for the dominating frequencies. 
 
+\clearpage
 \section{Vowel}
 
 \subsection{Task}
@@ -259,6 +282,7 @@ This is done by creating a pulse train with the same period as the recorded soun
 The period is easy to find in the DFTs of the recordings.
 The amplitude of the pulse train is found by simple testing until the generated sounds has a reasonable volume.
 The generated files sounds a bit syntetic but you can distinguish the a-sound from the o-sound.
+They do resemble the recorded sounds but are much more monotone.
 
 \subsection{Conclusion}
 
@@ -296,6 +320,7 @@ It seems that it is possible to create reasonably good models for the vowels a a
   \caption{The residual covariance of different model orders for the o-sound\label{res_cov_o}}
 \end{figure}
 
+\clearpage
 \section{Sentence}
 
 \subsection{Task}
@@ -306,7 +331,7 @@ In the last assignment an AR(8)-model is used to estimate a recorded sentence. A
 The theory in this assignment is mostly the same as in the first two assignments.
 The biggest difference is that the sentence is divided into segments of 160 samples each. 
 For each segment an AR-model is calculated. 
-To decide the optimal amplitude $A$ and period $D$ for the input pulse train of each segment the covariance function for the modeled signal is used. 
+To decide values for the amplitude $A$ and period $D$ for the input pulse train of each segment the covariance function for the modeled signal is used. 
 The square root of the maximum of the auto covariance function is the amplitude of the pulse train and the period of the pulse train is the time where the auto covariance function reaches its maximum. 
 To be sure to get a stable filter unstable poles must be made stable. 
 This can be done by mirroring them in the unit circle. 
@@ -318,13 +343,22 @@ Instead of using a pure pulse train as input, noise is added to it everywhere.
 The following noise is input $u(t)$ to the filter.
 $\lambda$ is the mean of the auto covariance function of the segment $N_{num}$ are the number of samples in the segment and $A$ and $D$ are the same as described in section~\ref{Theo}. 
 
-\[u(t)= e_1(t)+e_2(t)sum_{k=0} ^N \delta(t-kD),
-e_1(t)\sim N(0,\lambda),e_2(t)\sim N(0,\sqrt{N_{num}A/D}$$
+\[
+  u(t)= e_1(t)+e_2(t)sum_{k=0} ^N \delta(t-kD),
+e_1(t)\sim N(0,\lambda),e_2(t)\sim N(0,\sqrt{N_{num}A/D}
+\]
 
-\section{Conclusion}
-An eight order AR-model can model a voice so good that it can be used in a cellphone. However it has to be modified to be really good. The reason that AR is used is that it compresses the signal. The whole signal is not sent but only the coefficients in $\theta$. In this case where an eight order AR-model is used for an interval of 160 samples the compression is 95\% (8/160 = 0.05). 
+\subsection{Conclusion}
+An eight order AR-model can model a voice so good that it can be used in a cellphone.
+However it has to be modified to be really good.
+The reason that AR is used is that it compresses the signal.
+The whole signal is not sent but instead the coefficients in $\theta$, the amplitude A and the pulse length D.
+If the modifications with the white noise is used the mean of the covariance must also be sent.
+In this case where an eight order AR-model is used for an interval of 160 samples the compression is 93\% (11/160 = 0.06857). 
 
-
+The resconstructed sounds isn't perfect.
+There is some strange noises but it is possible to here what was recorded from the beginning.
+Definitely a good result if you consider that we're using 93\% less data than what was originally recorded.
 
 
 %\begin{figure}[H]
